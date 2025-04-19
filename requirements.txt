@@ -1,5 +1,5 @@
 flask==3.1.0
-opencv-python==4.11.0.86
+opencv-python-headless==4.11.0.86
 openai==1.0.1
 python-dotenv==1.0.1
 gunicorn==21.2.0
