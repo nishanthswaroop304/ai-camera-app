@@ -326,8 +326,8 @@ if __name__ == '__main__':
     
     print("🚀 Starting AI Camera App")
     print(f"📁 Upload folder: {UPLOAD_FOLDER}")
-    print(f"🌐 Server running at http://0.0.0.0:{port}")
+    print(f"🌐 Server running at https://0.0.0.0:{port}")  # Note: changed to https://
     
     # Turn off debug mode in production
     debug_mode = os.environ.get('FLASK_ENV') == 'development'
-    app.run(debug=debug_mode, host='0.0.0.0', port=port)
+    app.run(debug=debug_mode, host='0.0.0.0', port=port, ssl_context='adhoc')
