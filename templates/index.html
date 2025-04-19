@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Camera App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <h1>AI Camera</h1>
+            </div>
+        </header>
+        
+        <main>
+            <div class="camera-container">
+                <video id="camera" autoplay playsinline></video>
+                <div id="camera-controls">
+                    <button id="flip-camera" class="control-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18"></path><path d="m12 17 5-5-5-5"></path><path d="M7 12h10"></path></svg>
+                    </button>
+                    <button id="record-btn" class="control-btn">
+                        <svg id="record-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                    </button>
+                </div>
+                <div id="recording-indicator">Recording...</div>
+                <div id="realtime-indicator">Real-time Analysis</div>
+            </div>
+            
+            <div class="settings-container">
+                <div class="settings-group">
+                    <label for="ai-model">AI Model:</label>
+                    <select id="ai-model" class="settings-input">
+                        <option value="gpt-4o">GPT-4o</option>
+                        <option value="gpt-4o-mini">GPT-4o-mini</option>
+                    </select>
+                </div>
+                
+                <div class="settings-group">
+                    <label for="system-message">System Message (AI Behavior):</label>
+                    <div class="prompt-templates-toggle">
+                        <span>Show Example Prompts</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <div class="prompt-templates">
+                        <div class="template-item">
+                            <h4>Shopping Assistant:</h4>
+                            <p>You are a shopping assistant helping people choose the healthiest products. Analyze the products shown in the images and clearly identify the healthiest option. Format your response in markdown, use emojis, and be concise. Always start with the best product, include a one-line benefit, and briefly mention other products you analyzed. Keep your response clear and direct.</p>
+                            <button class="copy-btn" data-template="shopping">Copy</button>
+                        </div>
+                        <div class="template-item">
+                            <h4>Traffic Light Detector:</h4>
+                            <p>Analyze the image to identify traffic lights with solid colors only. Ignore arrow lights regardless of color. If a solid light is on, return only one of these responses: "GREEN", "RED", or "YELLOW". If no traffic lights are turned on or visible, return only "N/A".</p>
+                            <button class="copy-btn" data-template="traffic">Copy</button>
+                        </div>
+                        <div class="template-item">
+                            <h4>Car Distance Estimator:</h4>
+                            <p>Estimate the distance of the car in front of me in terms of car lengths. If the distance appears to be more than approximately 2 car lengths, respond only with "TOO FAR". If it's less than 2 car lengths, respond only with "TOO CLOSE". In all other cases (no cars visible, unclear distance, etc.), respond only with "N/A".</p>
+                            <button class="copy-btn" data-template="distance">Copy</button>
+                        </div>
+                    </div>
+                    <textarea id="system-message" class="settings-input" placeholder="Instructions for how the AI should behave..."></textarea>
+                </div>
+                
+                <div class="settings-group">
+                    <label for="frame-interval">Frame Interval (seconds):</label>
+                    <input type="number" id="frame-interval" min="1" max="10" value="1" class="settings-input">
+                </div>
+                
+                <div class="settings-group">
+                    <label for="analysis-mode">Analysis Mode:</label>
+                    <select id="analysis-mode" class="settings-input">
+                        <option value="batch">Analyze All Frames Together</option>
+                        <option value="sequential">Analyze Each Frame Individually</option>
+                        <option value="realtime">Analyze Frames in Real-time</option>
+                    </select>
+                </div>
+                
+                <div class="settings-group audio-settings">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="audio-feedback" class="settings-checkbox">
+                        <label for="audio-feedback">Play sound and read results in real-time mode</label>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <label for="prompt-input">AI Prompt:</label>
+                    <textarea id="prompt-input" class="settings-input" placeholder="What do you see in these images?"></textarea>
+                </div>
+                
+                <button id="analyze-btn" class="primary-btn" disabled>Analyze Video</button>
+            </div>
+            
+            <div class="result-container">
+                <h2>AI Analysis Results</h2>
+                <div id="loading-indicator" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Processing your video...</p>
+                </div>
+                <div id="result-content"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
